@@ -6,7 +6,7 @@ const selectServer = require('./commands/select');
 const serverPop = require('./commands/pop');
 const isOnline = require('./commands/offline');
 const playerList = require('./commands/players');
-
+const helpCommand = require('./commands/help');
 // new client
 const client = new Client({
   intents: [
