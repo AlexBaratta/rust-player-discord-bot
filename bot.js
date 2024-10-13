@@ -29,7 +29,7 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.author.bot || message.content.startsWith('!')) return; // ignore bot messages
+  if (message.author.bot || !message.content.startsWith('!')) return; // ignore bot messages
 
   const [command, ...args] = message.content.trim().split(/\s+/);
 
