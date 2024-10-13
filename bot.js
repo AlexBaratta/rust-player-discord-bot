@@ -29,7 +29,7 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.author.bot) return;
+  if (message.author.bot) return; // ignore bot messages
 
   const [command, ...args] = message.content.trim().split(/\s+/);
 
@@ -49,7 +49,11 @@ client.on('messageCreate', async (message) => {
     case '!list':
       await playerList(message, selectedServers);
       break;
+    case '!help':
+      await helpCommand(message);
+      break;
     default:
+      message.reply('Unknown command. Use `!help` for a list of commands.');
       break;
   }
 });

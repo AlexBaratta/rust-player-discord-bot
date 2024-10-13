@@ -4,7 +4,7 @@ module.exports = async (message, selectedServers) => {
   const serverId = selectedServers[message.channel.id];
 
   if (!serverId) {
-    return message.reply('Please select a server first using `!searchserver`.');
+    return message.reply('Please select a server first using `!server <name>`.');
   }
 
   try {

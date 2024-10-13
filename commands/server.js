@@ -2,7 +2,7 @@ const { fetchBattleMetrics } = require('../utils/fetchUtil');
 
 module.exports = async (message, query, serverSearchResults) => {
   if (!query) {
-    return message.reply('Please provide a server name. Usage: `!searchserver <name>`');
+    return message.reply('Please provide a server name. Usage: `!server <name>`');
   }
 
   try {
