@@ -44,7 +44,7 @@ client.on('messageCreate', async (message) => {
       await serverPop(message, selectedServers);
       break;
     case '!online':
-      await isOnline(message, args[0], selectedServers);
+      await isOnline(message, args.join(' '), selectedServers);
       break;
     case '!list':
       await playerList(message, selectedServers);
