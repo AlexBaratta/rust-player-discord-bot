@@ -13,7 +13,8 @@ module.exports = async (message, playerName, selectedServers) => {
     if (data.data.length === 0) {
       message.reply(`${playerName} is not online.`);
     } else {
-      message.reply(`${playerName} is online.`);
+      const matchingPlayers = data.data.map(player => player.attributes.name);
+      message.reply(`Users: ${matchingPlayers.join(', ')}`);
     }
   } catch (error) {
     console.error('Error checking player status:', error);
