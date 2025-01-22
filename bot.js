@@ -35,7 +35,7 @@ client.on('messageCreate', async (message) => {
 
   switch (command) {
     case '!server':
-      await searchServer(message, args.join(' '), serverSearchResults);
+      await searchServer(message, args.join(' '), serverSearchResults, selectedServers);
       break;
     case '!select':
       await selectServer(message, args[0], serverSearchResults, selectedServers);
