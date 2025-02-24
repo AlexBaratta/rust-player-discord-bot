@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 
-// Import your existing command modules
 const searchServer = require('./commands/server');
 const selectServer = require('./commands/select');
 const serverPop = require('./commands/pop');
@@ -9,7 +8,6 @@ const isOnline = require('./commands/offline');
 const playerList = require('./commands/players');
 const helpCommand = require('./commands/help');
 
-// Create a new client instance with the required intents
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -18,7 +16,6 @@ const client = new Client({
   ],
 });
 
-// In-memory storage for your command data
 const selectedServers = {}; // { 'channel_id': 'server_id' }
 const serverSearchResults = {}; // { 'channel_id': [{ id, name }, ...] }
 
@@ -32,13 +29,13 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-// Traditional prefix-based commands (e.g., !server, !select, etc.)
-client.on('messageCreate', async (message) => {
-  if (message.author.bot || !message.content.startsWith('!')) return;
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
 
   const [command, ...args] = message.content.trim().split(/\s+/);
+  const { commandName } = interaction;
 
-  switch (command) {
+  switch (commandName) {
     case '!server':
       await searchServer(message, args.join(' '), serverSearchResults, selectedServers);
       break;
@@ -54,7 +51,7 @@ client.on('messageCreate', async (message) => {
     case '!list':
       await playerList(message, selectedServers);
       break;
-    case '!help':
+    case 'help':
       await helpCommand(message);
       break;
     default:
@@ -63,11 +60,9 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-// Slash command handling for application commands
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  // Example slash command: /ping
   if (interaction.commandName === 'ping') {
     await interaction.reply('Pong!');
   }
