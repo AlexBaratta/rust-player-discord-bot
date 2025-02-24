@@ -20,7 +20,9 @@ const client = new Client({
 const selectedServers = {}; // { 'channel_id': 'server_id' }
 const serverSearchResults = {}; // { 'channel_id': [{ id, name }, ...] }
 
-const TOKEN = process.env.DISCORD_TOKEN;
+// const TOKEN = process.env.DISCORD_TOKEN;
+const TOKEN = process.env.DISCORD_TOKEN_DEV;
+
 
 client.login(TOKEN);
 
@@ -35,7 +37,7 @@ client.on('messageCreate', async (message) => {
 
   switch (command) {
     case '!server':
-      await searchServer(message, args.join(' '), serverSearchResults);
+      await searchServer(message, args.join(' '), serverSearchResults, selectedServers);
       break;
     case '!select':
       await selectServer(message, args[0], serverSearchResults, selectedServers);
