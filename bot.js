@@ -7,7 +7,7 @@ const serverPop = require('./commands/pop');
 const isOnline = require('./commands/offline');
 const playerList = require('./commands/players');
 const helpCommand = require('./commands/help');
-// new client
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -16,7 +16,6 @@ const client = new Client({
   ],
 });
 
-// in-memory storage
 const selectedServers = {}; // { 'channel_id': 'server_id' }
 const serverSearchResults = {}; // { 'channel_id': [{ id, name }, ...] }
 
@@ -30,12 +29,13 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('messageCreate', async (message) => {
-  if (message.author.bot || !message.content.startsWith('!')) return; // ignore bot messages
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
 
   const [command, ...args] = message.content.trim().split(/\s+/);
+  const { commandName } = interaction;
 
-  switch (command) {
+  switch (commandName) {
     case '!server':
       await searchServer(message, args.join(' '), serverSearchResults, selectedServers);
       break;
@@ -51,11 +51,19 @@ client.on('messageCreate', async (message) => {
     case '!list':
       await playerList(message, selectedServers);
       break;
-    case '!help':
+    case 'help':
       await helpCommand(message);
       break;
     default:
       message.reply('Unknown command. Use `!help` for a list of commands.');
       break;
+  }
+});
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'ping') {
+    await interaction.reply('Pong!');
   }
 });
