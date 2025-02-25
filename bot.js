@@ -35,34 +35,10 @@ client.on('interactionCreate', async (interaction) => {
   const { commandName } = interaction;
 
   switch (commandName) {
-    case '!server':
-      await searchServer(message, args.join(' '), serverSearchResults, selectedServers);
-      break;
-    case '!select':
-      await selectServer(message, args[0], serverSearchResults, selectedServers);
-      break;
-    case '!pop':
-      await serverPop(message, selectedServers);
-      break;
-    case '!online':
-      await isOnline(message, args.join(' '), selectedServers);
-      break;
-    case '!list':
-      await playerList(message, selectedServers);
-      break;
     case 'help':
       await helpCommand(commandName);
       break;
     default:
-      message.reply('Unknown command. Use `!help` for a list of commands.');
-      break;
-  }
-});
-
-client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
+      await interaction.reply({ content: 'Unknown command.', ephemeral: true });
   }
 });
