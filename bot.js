@@ -36,7 +36,7 @@ client.on('interactionCreate', async (interaction) => {
 
   switch (commandName) {
     case 'help':
-      await helpCommand(commandName);
+      await helpCommand(interaction);
       break;
     default:
       await interaction.reply({ content: 'Unknown command.', ephemeral: true });
