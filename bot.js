@@ -52,7 +52,7 @@ client.on('interactionCreate', async (interaction) => {
       await playerList(message, selectedServers);
       break;
     case 'help':
-      await helpCommand(message);
+      await helpCommand(commandName);
       break;
     default:
       message.reply('Unknown command. Use `!help` for a list of commands.');
