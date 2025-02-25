@@ -32,7 +32,6 @@ client.once('ready', () => {
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  const [command, ...args] = message.content.trim().split(/\s+/);
   const { commandName } = interaction;
 
   switch (commandName) {
