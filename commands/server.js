@@ -1,13 +1,11 @@
 const { fetchBattleMetrics } = require("../utils/fetchUtil");
+const { serverSearchResults, selectedServers } = require("../cache");
 
-module.exports = async (
-  message,
-  query,
-  serverSearchResults,
-  selectedServers
-) => {
+module.exports = async (interaction) => {
+  const query = interaction.options.getString("name");
+  console.log("query", query);
   if (!query) {
-    return message.reply(
+    return interaction.reply(
       "Please provide a server name or URL. Usage: `!server <name|URL>`"
     );
   }
@@ -24,9 +22,9 @@ module.exports = async (
         name: data.data.attributes.name,
       };
 
-      message.reply(`Server "${server.name}" has been selected.`);
-      selectedServers[message.channel.id] = serverId;
-      // serverSearchResults[message.channel.id] = [server];
+      interaction.reply(`Server "${server.name}" has been selected.`);
+      selectedServers[interaction.channelId] = serverId;
+      serverSearchResults[message.channelId] = [server];
       return;
     } else {
       const data = await fetchBattleMetrics(
@@ -38,22 +36,22 @@ module.exports = async (
       }));
 
       if (servers.length === 0) {
-        return message.reply("No servers found with that name.");
+        return interaction.reply("No servers found with that name.");
       } else if (servers.length === 1) {
-        message.reply(`Server "${servers[0].name}" has been selected.`);
-        serverSearchResults[message.channel.id] = [servers[0]];
+        interaction.reply(`Server "${servers[0].name}" has been selected.`);
+        serverSearchResults[interaction.channelId] = [servers[0]];
       } else {
-        serverSearchResults[message.channel.id] = servers;
+        serverSearchResults[interaction.channelId] = servers;
         const serverList = servers
           .map((s, i) => `${i + 1}. ${s.name}`)
           .join("\n");
-        message.reply(
+        interaction.reply(
           `Multiple servers found:\n${serverList}\n\nUse \`!select <number>\` to select.`
         );
       }
     }
   } catch (error) {
     console.error("Error searching servers:", error);
-    message.reply("An error occurred while searching for servers.");
+    interaction.reply("An error occurred while searching for servers.");
   }
 };

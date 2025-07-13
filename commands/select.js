@@ -1,13 +1,22 @@
-module.exports = async (message, index, serverSearchResults, selectedServers) => {
-    const servers = serverSearchResults[message.channel.id];
-    const selectedIndex = parseInt(index) - 1;
-  
-    if (!servers || !servers[selectedIndex]) {
-      return message.reply('Invalid selection. Please try again.');
+const { serverSearchResults, selectedServers } = require("../cache");
+
+module.exports = async (interaction) => {
+  console.log("Interaction", interaction.options);
+  try {
+    const i = interaction.options.getInteger("number") - 1; // offset 
+    console.log(i);
+    const servers = serverSearchResults[interaction.channelId];
+    console.log("ServerSearchRes", serverSearchResults);
+    console.log("Servers", servers);
+
+    if (!servers || !servers[i]) {
+      return interaction.reply("Invalid selection. Please try again.");
     }
-  
-    const selectedServer = servers[selectedIndex];
-    selectedServers[message.channel.id] = selectedServer.id;
-    message.reply(`Server "${selectedServer.name}" has been selected.`);
-  };
-  
+
+    const selectedServer = servers[i];
+    selectedServers[interaction.channel.id] = selectedServer.id;
+    interaction.reply(`Server "${selectedServer.name}" has been selected.`);
+  } catch (e) {
+    interaction.reply("Error ", e);
+  }
+};
