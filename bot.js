@@ -34,9 +34,17 @@ client.on('interactionCreate', async (interaction) => {
 
   const { commandName } = interaction;
 
+  console.log(  interaction.options.getString('name'))
+
   switch (commandName) {
     case 'help':
       await helpCommand(interaction);
+      break;
+    case 'server':
+      await searchServer(interaction, serverSearchResults, selectedServers);
+      break;
+    case 'select':
+      await selectServer(interaction);
       break;
     default:
       await interaction.reply({ content: 'Unknown command.', ephemeral: true });
