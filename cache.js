@@ -1,0 +1,4 @@
+module.exports = {
+  serverSearchResults: {},
+  selectedServers: {},
+};

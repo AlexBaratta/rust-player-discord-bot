@@ -16,8 +16,6 @@ const client = new Client({
   ],
 });
 
-const selectedServers = {}; // { 'channel_id': 'server_id' }
-const serverSearchResults = {}; // { 'channel_id': [{ id, name }, ...] }
 
 // const TOKEN = process.env.DISCORD_TOKEN;
 const TOKEN = process.env.DISCORD_TOKEN_DEV;
@@ -34,14 +32,12 @@ client.on('interactionCreate', async (interaction) => {
 
   const { commandName } = interaction;
 
-  console.log(  interaction.options.getString('name'))
-
   switch (commandName) {
     case 'help':
       await helpCommand(interaction);
       break;
     case 'server':
-      await searchServer(interaction, serverSearchResults, selectedServers);
+      await searchServer(interaction);
       break;
     case 'select':
       await selectServer(interaction);

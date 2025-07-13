@@ -1,6 +1,7 @@
 const { fetchBattleMetrics } = require("../utils/fetchUtil");
+const { serverSearchResults, selectedServers } = require("../cache");
 
-module.exports = async (interaction, serverSearchResults, selectedServers) => {
+module.exports = async (interaction) => {
   const query = interaction.options.getString("name");
   console.log("query", query);
   if (!query) {
@@ -22,8 +23,8 @@ module.exports = async (interaction, serverSearchResults, selectedServers) => {
       };
 
       interaction.reply(`Server "${server.name}" has been selected.`);
-      selectedServers[interaction.channel.id] = serverId;
-      // serverSearchResults[message.channel.id] = [server];
+      selectedServers[interaction.channelId] = serverId;
+      serverSearchResults[message.channelId] = [server];
       return;
     } else {
       const data = await fetchBattleMetrics(
@@ -38,9 +39,9 @@ module.exports = async (interaction, serverSearchResults, selectedServers) => {
         return interaction.reply("No servers found with that name.");
       } else if (servers.length === 1) {
         interaction.reply(`Server "${servers[0].name}" has been selected.`);
-        serverSearchResults[interaction.channel.id] = [servers[0]];
+        serverSearchResults[interaction.channelId] = [servers[0]];
       } else {
-        serverSearchResults[interaction.channel.id] = servers;
+        serverSearchResults[interaction.channelId] = servers;
         const serverList = servers
           .map((s, i) => `${i + 1}. ${s.name}`)
           .join("\n");
