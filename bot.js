@@ -43,6 +43,10 @@ client.on("interactionCreate", async (interaction) => {
       break;
     case "pop":
       await pop(interaction);
+      break;
+    case "list":
+      await playerList(interaction);
+      break;
     default:
       await interaction.reply({ content: "Unknown command.", ephemeral: true });
   }
