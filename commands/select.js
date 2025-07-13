@@ -3,7 +3,7 @@ const { serverSearchResults, selectedServers } = require("../cache");
 module.exports = async (interaction) => {
   console.log("Interaction", interaction.options);
   try {
-    const i = interaction.options.getInteger("number");
+    const i = interaction.options.getInteger("number") - 1; // offset 
     console.log(i);
     const servers = serverSearchResults[interaction.channelId];
     console.log("ServerSearchRes", serverSearchResults);

@@ -4,10 +4,11 @@ const { Client, GatewayIntentBits } = require("discord.js");
 const searchServer = require("./commands/server");
 const selectServer = require("./commands/select");
 const serverPop = require("./commands/pop");
-const isOnline = require("./commands/offline");
+const isOnline = require("./commands/online");
 const playerList = require("./commands/players");
 const helpCommand = require("./commands/help");
 const pop = require("./commands/pop");
+const online = require("./commands/online");
 
 const client = new Client({
   intents: [
@@ -46,6 +47,9 @@ client.on("interactionCreate", async (interaction) => {
       break;
     case "list":
       await playerList(interaction);
+      break;
+    case "online":
+      await online(interaction);
       break;
     default:
       await interaction.reply({ content: "Unknown command.", ephemeral: true });
